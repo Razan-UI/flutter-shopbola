@@ -1,9 +1,14 @@
+import 'package:bola_shop/screens/productlist_form.dart';
+import 'package:bola_shop/widgets/product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:bola_shop/widgets/left_drawer.dart';
+
+
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
 
-  final String nama = "Lionel Messi"; //nama
-  final String npm = "2406275678"; //npm
+  final String nama = "Razan Muhammad Salim"; //nama
+  final String npm = "2406496233"; //npm
   final String kelas = "B"; //kelas
 
   final List<ItemHomepage> items = [
@@ -32,6 +37,7 @@ class MyHomePage extends StatelessWidget {
             .colorScheme
             .primary,
       ),
+      drawer: LeftDrawer(),
       // Body halaman dengan padding di sekelilingnya.
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -136,56 +142,3 @@ class ItemHomepage {
   ItemHomepage(this.name, this.icon, this.color);
 }
 
-class ItemCard extends StatelessWidget {
-  // Menampilkan kartu dengan ikon dan nama.
-
-  final ItemHomepage item;
-
-  const ItemCard(this.item, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      // Menentukan warna latar belakang dari tema aplikasi.
-      color: item.color,
-      // Membuat sudut kartu melengkung.
-      borderRadius: BorderRadius.circular(12),
-
-      child: InkWell(
-        // Aksi ketika kartu ditekan.
-        onTap: () {
-          // Menampilkan pesan SnackBar saat kartu ditekan.
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-                SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!"))
-            );
-        },
-        // Container untuk menyimpan Icon dan Text
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              // Menyusun ikon dan teks di tengah kartu.
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-}
