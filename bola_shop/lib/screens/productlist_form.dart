@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:bola_shop/widgets/left_drawer.dart';
 import 'dart:convert';
@@ -197,12 +196,21 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            // TODO: Replace the URL with your app's URL
-                            // To connect Android emulator with Django on localhost, use URL http://10.0.2.2/
-                            // If you using chrome,  use URL http://localhost:8000
+                            // First check if user is authenticated
+                            final authCheck = await request.get(
+                              "http://127.0.0.1:8000/auth/whoami/",
+                            );
                             
+                            if (!authCheck['is_authenticated']) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Please login first!")),
+                              );
+                              return;
+                            }
+                            
+                            // If authenticated, proceed with product creation
                             final response = await request.postJson(
-                              "http://localhost:8000/create-flutter/",
+                              "http://127.0.0.1:8000/create-flutter/",
                               jsonEncode({
                                 "name": _name,
                                 "description": _description,
@@ -212,22 +220,20 @@ class _ProductFormPageState extends State<ProductFormPage> {
                                 "is_featured": _isFeatured,
                               }),
                             );
+                            
                             if (context.mounted) {
                               if (response['status'] == 'success') {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("News successfully saved!"),
-                                ));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Product successfully saved!")),
+                                );
                                 Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MyHomePage()),
+                                  MaterialPageRoute(builder: (context) => MyHomePage()),
                                 );
                               } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("Something went wrong, please try again."),
-                                ));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(response['message'] ?? "Error")),
+                                );
                               }
                             }
                           }

@@ -16,7 +16,7 @@ class ProductEntry {
     String thumbnail; //String?
     String description;
     bool isFeatured;
-    int? userId;
+    int userId;
 
     ProductEntry({
         required this.id,
