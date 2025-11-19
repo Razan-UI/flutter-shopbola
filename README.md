@@ -1,4 +1,4 @@
-<!-- # flutter-shopbola
+<!-- <!-- # flutter-shopbola
 
 1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
     Ans: Widgets themselves are what make up a flutter app's UI. A widget tree is a tree structure where each node is a widget which will determine how the app's UI is going to be displayed. These widgets are arranged hierarchically and can form a parent-child relationship. 
@@ -143,4 +143,35 @@ Ans:
     yang terdapat di main.dart, dimana color scheme tersebut akan dapat diakses oleh semua page di projek ini. Pada appBar productlist_form.dart, saya mengimplementasi color inherit via,
     backgroundColor: Theme.of(context).colorScheme.secondary,
     agar header/appbar dari page form ini akan menggunakan secondary theme dari proyek ini, sehingga tema overall dari app ini dapat menjadi konsisten.
-    
+     -->
+
+Tugas 9:
+1. Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, 
+Ans:
+  Karena Dart bersifat type safe dan akan memastikan apakah data yang diakses memiliki tipe yang benar dan mencegah kecelakaan dimana data tertentu diolah menjadi tipe data yang lain (i.e int processed as a String, preventing + operators working mathematically) Jika tidak membuat model, hal yang tadi disebut dapat terjadi
+
+2. Apa fungsi package http dan CookieRequest dalam tugas ini? Jelaskan perbedaan peran http vs CookieRequest.
+Ans:
+  CookieRequest lebih advanced dan dapat mengelola cookies secara otomatis dan memiliki state persistence dimana cookies tsb akan disimpan di dalam device storage. Selain itu, cookierequest bersifat stateful dan tahu jika user sudah login atau belum.Di sisi lain, http perlu mengelola cookies secara manual dan tidak memiliki state. (CookieRequest digunakan untuk create product pada tugas ini dan akan memverifikasi apakah user yang membuat produk sudah diotentikasi atau belum)
+
+3.Jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+Ans:
+  Agar semua komponen mengerti bahwa user telah login di sesi tersebt dan memverifikasi kondisi user (apakah mereka masih authenticated atau tidak)
+
+4. Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+Ans:
+  10.0.2.2 perlu ditambahkan karena android emulator memerlukan akses khusus ke projek ini (utk server django, perlu 127.00:8000 atau semacamnya), CORS berupa mekanisme keamanan browser yang membatasi request dari origin yang berbeda, jika tidak ada, browser akan memblock request. SameSite digunakan untuk session persistence agar state authenticated/login tertahan di semua page aplikasi. Izin internet diperukan karena Android memerlukan permission khusus agar aplikasi dapat dihubungkan, jika tidak ada, android emulator akan tidak dapat mengakses aplikasi.
+
+5. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+Ans:
+  Input -> Flutter validation dan check otentikasi -> Serialize dari Dart obj ke JSON -> HTTP Request ke Django w/ session cooki -> Django akan parse JSON, validate data tsb, dan akan create entry baru di models, Python objects akan diserialize balik ke JSON, -> HTTP Response ke Flutter -> Display via render widgets
+
+6. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+Ans: Register, create user baru di database -> Login, credentials divalidasi dan session cookie akan dibuat dan disimpan -> Cookies akan dikirim di setiap request setelah sudah diotentikasi -> Saat logout, session didelete dan cookies diclear/hilangkan
+
+7. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step!
+Ans:
+  1. Membuat model Dart untuk JSON via QuickType.io utk product_entry.dart
+  2. Setup Django backend utk Flutter di settings.py dengan corsheaders dan session cookies
+  3. Implement login, register, dan logout di authentication app dengan Django authenticate dan mereturn JSONResponse agar flutter dapat memprosesnya, di Flutter, flutter akan mem-parse data tsb agar dapat diproses sebagai Dart object.
+  4. 
