@@ -1,3 +1,10 @@
+NOTES:
+untuk Changes di Project Django, terletak di repository sebelumnya (kakibola)
+(it doesnt allow me to commit the Django folder from local into this repository and so, its synced with the old repository)
+
+
+
+
 <!-- <!-- # flutter-shopbola
 
 1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
